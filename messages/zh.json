@@ -1,0 +1,18 @@
+{
+  "common": {
+    "title": "Meta Tags Preview Tool",
+    "subtitle": "See how your links look on Facebook, Twitter, LinkedIn, and more",
+    "help": "Help & Documentation"
+  },
+  "input": {
+    "placeholder": "Enter your website URL...",
+    "button": "Fetch Meta Tags",
+    "fetching": "Fetching..."
+  },
+  "preview": {
+    "title": "Preview",
+    "facebook": "Facebook Preview",
+    "twitter": "Twitter Preview",
+    "linkedin": "LinkedIn Preview"
+  }
+}
