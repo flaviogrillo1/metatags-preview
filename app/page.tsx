@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { MetaPreview } from "@/components/MetaPreview";
 import { UrlInput } from "@/components/UrlInput";
 import { TagInput } from "@/components/TagInput";
@@ -8,9 +8,12 @@ import { ValidationSummary } from "@/components/ValidationSummary";
 import { ExportButton } from "@/components/ExportButton";
 import { PricingSection } from "@/components/PricingSection";
 import { UsageCounter } from "@/components/UsageCounter";
+import { useStripeSubscription } from "@/hooks/useStripeSubscription";
 import type { MetaTags, ValidationResult } from "@/types/meta";
 
 export default function Home() {
+  const { isPro, customerId, loading: subLoading, setCustomerId, setProStatus } = useStripeSubscription();
+  
   const [url, setUrl] = useState("");
   const [metaTags, setMetaTags] = useState<MetaTags>({
     title: "",
@@ -44,11 +47,6 @@ export default function Home() {
     
     return saved ? parseInt(saved, 10) : 0;
   });
-  
-  const [isPro, setIsPro] = useState(() => {
-    if (typeof window === 'undefined') return false;
-    return localStorage.getItem('metatags_is_pro') === 'true';
-  });
 
   const FREE_LIMIT = 5;
 
@@ -61,12 +59,22 @@ export default function Home() {
     }
   };
 
-  const updateProStatus = (proStatus: boolean) => {
-    setIsPro(proStatus);
-    if (typeof window !== 'undefined') {
-      localStorage.setItem('metatags_is_pro', proStatus.toString());
+  // Check URL parameters for successful checkout
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const sessionId = params.get('session_id');
+    
+    if (sessionId && params.get('success') === 'true') {
+      // Successful payment - customer should be marked as pro
+      setProStatus(true);
+      
+      // Clear URL params
+      window.history.replaceState({}, '', window.location.pathname);
+      
+      // Show success message
+      alert('🎉 Payment successful! You now have unlimited previews.');
     }
-  };
+  }, []);
 
   const handleFetchMeta = async (targetUrl: string) => {
     if (!isPro && usageCount >= FREE_LIMIT) {
@@ -174,7 +182,11 @@ export default function Home() {
         {/* Pricing Section */}
         <PricingSection 
           isPro={isPro}
-          onUpgrade={() => updateProStatus(true)}
+          customerId={customerId}
+          onUpgrade={(newCustomerId) => {
+            setCustomerId(newCustomerId);
+            setProStatus(true);
+          }}
         />
       </div>
     </div>

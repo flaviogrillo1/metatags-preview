@@ -5,10 +5,11 @@ import { Check, Zap } from "lucide-react";
 
 interface PricingSectionProps {
   isPro: boolean;
-  onUpgrade: () => void;
+  customerId: string | null;
+  onUpgrade: (customerId: string) => void;
 }
 
-export function PricingSection({ isPro, onUpgrade }: PricingSectionProps) {
+export function PricingSection({ isPro, customerId, onUpgrade }: PricingSectionProps) {
   const [loading, setLoading] = useState(false);
 
   const handleUpgrade = async () => {
@@ -17,12 +18,25 @@ export function PricingSection({ isPro, onUpgrade }: PricingSectionProps) {
       const response = await fetch("/api/create-checkout", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ 
+          customerId: customerId || undefined,
+          returnUrl: window.location.href,
+        }),
       });
 
       if (!response.ok) throw new Error("Failed to create checkout session");
 
-      const { url } = await response.json();
-      window.location.href = url;
+      const data = await response.json();
+      
+      // Store customer ID if this is a new customer
+      if (data.customerId) {
+        onUpgrade(data.customerId);
+        localStorage.setItem('stripe_customer_id', data.customerId);
+      }
+      
+      if (data.url) {
+        window.location.href = data.url;
+      }
     } catch (error) {
       console.error("Error creating checkout:", error);
       alert("Failed to process upgrade. Please try again.");
