@@ -1,9 +1,11 @@
+import Link from "next/link";
+
 export default function HelpPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800">
       <div className="container mx-auto px-4 py-8 max-w-4xl">
         <div className="mb-8">
-          <a 
+          <Link 
             href="/" 
             className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300"
           >
@@ -11,7 +13,7 @@ export default function HelpPage() {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
             </svg>
             Back to Tool
-          </a>
+          </Link>
         </div>
 
         <h1 className="text-4xl font-bold mb-8 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
@@ -32,7 +34,7 @@ export default function HelpPage() {
               <h3 className="text-lg font-semibold text-slate-800 dark:text-slate-100 mb-2">How to Use:</h3>
               <ol className="list-decimal list-inside space-y-2 text-slate-600 dark:text-slate-300">
                 <li>Enter any website URL in the input field</li>
-                <li>Click "Preview" to fetch Open Graph and Twitter Card meta tags</li>
+                <li>Click &quot;Preview&quot; to fetch Open Graph and Twitter Card meta tags</li>
                 <li>Edit tags manually to test different combinations</li>
                 <li>See real-time previews for Facebook, Twitter, and LinkedIn</li>
                 <li>Export previews as PNG images</li>
@@ -67,7 +69,7 @@ export default function HelpPage() {
               🖼️ Images Not Showing?
             </h2>
             <div className="space-y-3 text-slate-600 dark:text-slate-300">
-              <p>If preview images don't appear, it's usually due to:</p>
+              <p>If preview images don&apos;t appear, it&apos;s usually due to:</p>
               
               <div className="bg-yellow-50 dark:bg-yellow-900/20 border-l-4 border-yellow-400 p-4 rounded">
                 <p className="font-semibold mb-2">CORS Restrictions</p>
@@ -141,7 +143,7 @@ export default function HelpPage() {
             </h2>
             <div className="space-y-3 text-slate-600 dark:text-slate-300">
               <p>
-                Click the "Export as PNG" button to download a screenshot of your preview. 
+                Click the &quot;Export as PNG&quot; button to download a screenshot of your preview. 
                 This is useful for:
               </p>
               <ul className="list-disc list-inside space-y-1 ml-4">
@@ -198,7 +200,7 @@ export default function HelpPage() {
             <div className="space-y-4 text-slate-600 dark:text-slate-300">
               <div>
                 <h3 className="font-semibold text-slate-800 dark:text-slate-100 mb-1">
-                  Why don't images from some websites appear?
+                  Why don&apos;t images from some websites appear?
                 </h3>
                 <p className="text-sm">
                   Many websites configure CORS (Cross-Origin Resource Sharing) policies that prevent images from being embedded on other sites. This is a security feature. You can manually enter image URLs or use images from your own server.
@@ -254,15 +256,15 @@ export default function HelpPage() {
                 </svg>
                 GitHub Issues
               </a>
-              <a 
-                href="/" 
+              <Link
+                href="/"
                 className="inline-flex items-center gap-2 px-4 py-2 bg-white/20 hover:bg-white/30 rounded-lg transition-colors"
               >
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
                 </svg>
                 Back to Tool
-              </a>
+              </Link>
             </div>
           </section>
         </div>
