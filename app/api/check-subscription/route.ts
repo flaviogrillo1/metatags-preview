@@ -1,20 +1,26 @@
 import { NextRequest, NextResponse } from "next/server";
 import Stripe from "stripe";
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || "", {
-  apiVersion: "2025-02-24.acacia",
-  typescript: true,
-});
-
 export async function POST(request: NextRequest) {
   try {
+    if (!process.env.STRIPE_SECRET_KEY) {
+      return NextResponse.json({
+        isPro: false,
+        customerId: null,
+      });
+    }
+
+    const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
+      apiVersion: "2025-02-24.acacia",
+      typescript: true,
+    });
+
     const { customerId } = await request.json();
 
     if (!customerId) {
       return NextResponse.json({ error: "Customer ID is required" }, { status: 400 });
     }
 
-    // Check if customer has an active subscription
     const subscriptions = await stripe.subscriptions.list({
       customer: customerId,
       status: "active",
