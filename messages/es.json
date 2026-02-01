@@ -17,7 +17,7 @@
   },
   "validation": {
     "title": "Resultados de Validación",
-    "valid": "✅ ¡Todos los tags son válidos!",
+    "valid": "¡Todos los tags son válidos!",
     "warnings": "⚠️ Advertencias",
     "errors": "❌ Errores",
     "noTitle": "Falta el tag de título",
