@@ -206,9 +206,11 @@ export function HomePage({ locale = 'en' }: HomePageProps) {
     setMetaTags(prev => ({ ...prev, ...updates }));
   };
 
-  const handleUnlock = () => {
-    unlockDay();
+  const handleUnlock = async () => {
+    // Don't unlock directly - user needs to pay via PricingSection
     setShowLimitModal(false);
+    // Scroll to pricing section
+    document.getElementById('pricing-section')?.scrollIntoView({ behavior: 'smooth' });
   };
 
   return (
@@ -282,11 +284,13 @@ export function HomePage({ locale = 'en' }: HomePageProps) {
           </div>
         </div>
 
-        <PricingSection 
-          isPro={isPro}
-          hoursRemaining={hoursRemaining}
-          onUnlock={() => handleUnlock()}
-        />
+        <div id="pricing-section">
+          <PricingSection 
+            isPro={isPro}
+            hoursRemaining={hoursRemaining}
+            onUnlock={() => handleUnlock()}
+          />
+        </div>
       </div>
 
       {/* Modals */}
@@ -296,8 +300,6 @@ export function HomePage({ locale = 'en' }: HomePageProps) {
         title={t.limitReached}
         message={t.limitMessage}
         type="pricing"
-        onAction={handleUnlock}
-        actionLabel={t.unlockButton}
       />
 
       <Modal
