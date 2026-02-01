@@ -27,10 +27,46 @@ export default function Home() {
     errors: [],
   });
   const [loading, setLoading] = useState(false);
-  const [usageCount, setUsageCount] = useState(0);
-  const [isPro, setIsPro] = useState(false);
+  
+  // Load usage from localStorage on mount
+  const [usageCount, setUsageCount] = useState(() => {
+    if (typeof window === 'undefined') return 0;
+    const saved = localStorage.getItem('metatags_usage_count');
+    const savedDate = localStorage.getItem('metatags_usage_date');
+    const today = new Date().toDateString();
+    
+    // Reset if it's a new day
+    if (savedDate && savedDate !== today) {
+      localStorage.removeItem('metatags_usage_count');
+      localStorage.removeItem('metatags_usage_date');
+      return 0;
+    }
+    
+    return saved ? parseInt(saved, 10) : 0;
+  });
+  
+  const [isPro, setIsPro] = useState(() => {
+    if (typeof window === 'undefined') return false;
+    return localStorage.getItem('metatags_is_pro') === 'true';
+  });
 
   const FREE_LIMIT = 5;
+
+  // Save usage to localStorage whenever it changes
+  const updateUsageCount = (newCount: number) => {
+    setUsageCount(newCount);
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('metatags_usage_count', newCount.toString());
+      localStorage.setItem('metatags_usage_date', new Date().toDateString());
+    }
+  };
+
+  const updateProStatus = (proStatus: boolean) => {
+    setIsPro(proStatus);
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('metatags_is_pro', proStatus.toString());
+    }
+  };
 
   const handleFetchMeta = async (targetUrl: string) => {
     if (!isPro && usageCount >= FREE_LIMIT) {
@@ -54,7 +90,7 @@ export default function Home() {
       setUrl(targetUrl);
       
       if (!isPro) {
-        setUsageCount(prev => prev + 1);
+        updateUsageCount(usageCount + 1);
       }
     } catch (error) {
       console.error("Error fetching meta tags:", error);
@@ -93,7 +129,22 @@ export default function Home() {
         </header>
 
         {/* Usage Counter */}
-        <UsageCounter count={usageCount} limit={FREE_LIMIT} isPro={isPro} />
+        <div className="flex justify-center gap-4 mb-8">
+          <UsageCounter count={usageCount} limit={FREE_LIMIT} isPro={isPro} />
+          {!isPro && usageCount > 0 && (
+            <button
+              onClick={() => {
+                if (confirm('Reset your daily usage counter? This is useful for testing.')) {
+                  updateUsageCount(0);
+                }
+              }}
+              className="px-3 py-1 text-xs bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-300 rounded transition-colors"
+              title="Reset usage counter (testing only)"
+            >
+              Reset
+            </button>
+          )}
+        </div>
 
         {/* Main Content */}
         <div className="grid lg:grid-cols-2 gap-8 mb-12">
@@ -123,7 +174,7 @@ export default function Home() {
         {/* Pricing Section */}
         <PricingSection 
           isPro={isPro}
-          onUpgrade={() => setIsPro(true)}
+          onUpgrade={() => updateProStatus(true)}
         />
       </div>
     </div>
