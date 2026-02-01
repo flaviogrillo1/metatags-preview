@@ -114,7 +114,7 @@ export function HomePage({ locale }: HomePageProps) {
         <header className="text-center mb-12">
           <div className="flex justify-end mb-4">
             <a 
-              href="/help" 
+              href="help" 
               className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 bg-white dark:bg-slate-800 rounded-lg shadow-sm hover:shadow-md transition-all"
             >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
