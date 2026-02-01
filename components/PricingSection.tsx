@@ -20,7 +20,7 @@ export function PricingSection({ isPro, hoursRemaining, onUnlock }: PricingSecti
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ 
-          returnUrl: window.location.href,
+          returnUrl: typeof window !== 'undefined' ? window.location.href : '',
         }),
       });
 
@@ -36,7 +36,7 @@ export function PricingSection({ isPro, hoursRemaining, onUnlock }: PricingSecti
       const { error } = await (await stripe).confirmPayment({
         clientSecret,
         confirmParams: {
-          return_url: window.location.href + '?payment_intent=succeeded&redirect_status=succeeded',
+          return_url: typeof window !== 'undefined' ? window.location.href + '?payment_intent=succeeded&redirect_status=succeeded' : '',
         },
       });
 
