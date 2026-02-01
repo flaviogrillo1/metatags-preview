@@ -11,7 +11,11 @@ import { UsageCounter } from "@/components/UsageCounter";
 import { useStripeSubscription } from "@/hooks/useStripeSubscription";
 import type { MetaTags, ValidationResult } from "@/types/meta";
 
-export default function Home() {
+interface HomePageProps {
+  locale?: string;
+}
+
+export function HomePage({ locale }: HomePageProps) {
   const { isPro, expiresAt, loading: subLoading, unlockDay, hoursRemaining } = useStripeSubscription();
   
   const [url, setUrl] = useState("");
@@ -31,14 +35,12 @@ export default function Home() {
   });
   const [loading, setLoading] = useState(false);
   
-  // Load usage from localStorage on mount
   const [usageCount, setUsageCount] = useState(() => {
     if (typeof window === 'undefined') return 0;
     const saved = localStorage.getItem('metatags_usage_count');
     const savedDate = localStorage.getItem('metatags_usage_date');
     const today = new Date().toDateString();
     
-    // Reset if it's a new day
     if (savedDate && savedDate !== today) {
       localStorage.removeItem('metatags_usage_count');
       localStorage.removeItem('metatags_usage_date');
@@ -50,7 +52,6 @@ export default function Home() {
 
   const FREE_LIMIT = 5;
 
-  // Save usage to localStorage whenever it changes
   const updateUsageCount = (newCount: number) => {
     setUsageCount(newCount);
     if (typeof window !== 'undefined') {
@@ -59,20 +60,14 @@ export default function Home() {
     }
   };
 
-  // Check URL parameters for successful payment
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const paymentIntent = params.get('payment_intent');
     const redirectStatus = params.get('redirect_status');
     
     if (paymentIntent === 'succeeded' && redirectStatus === 'succeeded') {
-      // Successful payment - unlock 24h access
       unlockDay();
-      
-      // Clear URL params
       window.history.replaceState({}, '', window.location.pathname);
-      
-      // Show success message
       alert('🎉 Payment successful! You now have 24 hours of unlimited access.');
     }
   }, []);
@@ -116,19 +111,8 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800">
       <div className="container mx-auto px-4 py-8 max-w-7xl">
-        {/* Header */}
         <header className="text-center mb-12">
-          <div className="flex justify-end mb-4">
-            <a 
-              href="/help" 
-              className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 bg-white dark:bg-slate-800 rounded-lg shadow-sm hover:shadow-md transition-all"
-            >
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-              Help & Documentation
-            </a>
-          </div>
+          <div className="flex justify-end mb-4"></div>
           <h1 className="text-5xl font-bold mb-4 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
             Meta Tags Preview Tool
           </h1>
@@ -137,7 +121,6 @@ export default function Home() {
           </p>
         </header>
 
-        {/* Usage Counter */}
         <div className="flex justify-center gap-4 mb-8">
           <UsageCounter count={usageCount} limit={FREE_LIMIT} isPro={isPro} />
           {isPro && hoursRemaining > 0 && (
@@ -160,9 +143,7 @@ export default function Home() {
           )}
         </div>
 
-        {/* Main Content */}
         <div className="grid lg:grid-cols-2 gap-8 mb-12">
-          {/* Left Column - Input */}
           <div className="space-y-6">
             <UrlInput 
               onSubmit={handleFetchMeta} 
@@ -177,7 +158,6 @@ export default function Home() {
             <ValidationSummary validation={validation} />
           </div>
 
-          {/* Right Column - Preview */}
           <div className="space-y-6">
             <MetaPreview metaTags={metaTags} />
             
@@ -185,7 +165,6 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Pricing Section */}
         <PricingSection 
           isPro={isPro}
           hoursRemaining={hoursRemaining}
