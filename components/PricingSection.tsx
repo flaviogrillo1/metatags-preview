@@ -29,11 +29,15 @@ export function PricingSection({ isPro, hoursRemaining, onUnlock }: PricingSecti
       const { clientSecret, amount, currency } = await response.json();
       
       // Use Stripe.js to complete payment
-      const stripe = (await import("@stripe/stripe-js")).loadStripe(
+      const stripeInstance = await (await import("@stripe/stripe-js")).loadStripe(
         process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY || ""
       );
       
-      const { error } = await (await stripe).confirmPayment({
+      if (!stripeInstance) {
+        throw new Error("Failed to load Stripe");
+      }
+      
+      const { error } = await stripeInstance.confirmPayment({
         clientSecret,
         confirmParams: {
           return_url: typeof window !== 'undefined' ? window.location.href + '?payment_intent=succeeded&redirect_status=succeeded' : '',
