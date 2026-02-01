@@ -8,9 +8,12 @@ interface ModalProps {
   title: string;
   message: string;
   type?: 'error' | 'warning' | 'success' | 'pricing';
+  onConfirm?: () => void;
+  confirmText?: string;
+  cancelText?: string;
 }
 
-export function Modal({ isOpen, onClose, title, message, type = 'error' }: ModalProps) {
+export function Modal({ isOpen, onClose, title, message, type = 'error', onConfirm, confirmText = 'Got it', cancelText }: ModalProps) {
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = 'hidden';
@@ -92,12 +95,22 @@ export function Modal({ isOpen, onClose, title, message, type = 'error' }: Modal
           </div>
         )}
 
-        <button
-          onClick={onClose}
-          className="w-full py-2 px-6 bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 text-slate-800 dark:text-slate-200 font-semibold rounded-lg transition-colors"
-        >
-          Got it
-        </button>
+        <div className={onConfirm ? "flex gap-3" : ""}>
+          {onConfirm && (
+            <button
+              onClick={onClose}
+              className="flex-1 py-2 px-6 bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 text-slate-800 dark:text-slate-200 font-semibold rounded-lg transition-colors"
+            >
+              {cancelText || 'Cancel'}
+            </button>
+          )}
+          <button
+            onClick={onConfirm ? onConfirm : onClose}
+            className={onConfirm ? "flex-1 py-2 px-6 bg-red-600 hover:bg-red-700 text-white font-semibold rounded-lg transition-colors" : "w-full py-2 px-6 bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 text-slate-800 dark:text-slate-200 font-semibold rounded-lg transition-colors"}
+          >
+            {confirmText}
+          </button>
+        </div>
       </div>
     </div>
   );

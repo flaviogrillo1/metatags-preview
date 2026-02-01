@@ -145,6 +145,8 @@ export function HomePage({ locale = 'en' }: HomePageProps) {
   const [showLimitModal, setShowLimitModal] = useState(false);
   const [showErrorModal, setShowErrorModal] = useState(false);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [showResetModal, setShowResetModal] = useState(false);
+  const [errorTitle, setErrorTitle] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
 
   const updateUsageCount = (newCount: number) => {
@@ -213,6 +215,12 @@ export function HomePage({ locale = 'en' }: HomePageProps) {
     document.getElementById('pricing-section')?.scrollIntoView({ behavior: 'smooth' });
   };
 
+  const handlePaymentError = (title: string, message: string) => {
+    setErrorTitle(title);
+    setErrorMessage(message);
+    setShowErrorModal(true);
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800">
       <div className="container mx-auto px-3 sm:px-4 py-4 sm:py-8 max-w-7xl">
@@ -249,9 +257,7 @@ export function HomePage({ locale = 'en' }: HomePageProps) {
           {!isPro && usageCount > 0 && (
             <button
               onClick={() => {
-                if (confirm(t.reset + '?')) {
-                  updateUsageCount(0);
-                }
+                setShowResetModal(true);
               }}
               className="px-3 py-1 text-xs bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-300 rounded transition-colors"
               title="Reset usage counter"
@@ -280,7 +286,10 @@ export function HomePage({ locale = 'en' }: HomePageProps) {
           <div className="space-y-4 sm:space-y-6">
             <MetaPreview metaTags={metaTags} />
             
-            <ExportButton metaTags={metaTags} />
+            <ExportButton 
+              metaTags={metaTags}
+              onError={handlePaymentError}
+            />
           </div>
         </div>
 
@@ -289,6 +298,7 @@ export function HomePage({ locale = 'en' }: HomePageProps) {
             isPro={isPro}
             hoursRemaining={hoursRemaining}
             onUnlock={() => handleUnlock()}
+            onError={handlePaymentError}
           />
         </div>
       </div>
@@ -305,7 +315,7 @@ export function HomePage({ locale = 'en' }: HomePageProps) {
       <Modal
         isOpen={showErrorModal}
         onClose={() => setShowErrorModal(false)}
-        title={t.fetchError}
+        title={errorTitle || t.fetchError}
         message={errorMessage}
         type="error"
       />
@@ -316,6 +326,20 @@ export function HomePage({ locale = 'en' }: HomePageProps) {
         title={t.paymentSuccess}
         message={t.paymentSuccessMessage}
         type="success"
+      />
+
+      <Modal
+        isOpen={showResetModal}
+        onClose={() => setShowResetModal(false)}
+        title={t.reset}
+        message={t.reset + '?'}
+        type="warning"
+        onConfirm={() => {
+          updateUsageCount(0);
+          setShowResetModal(false);
+        }}
+        confirmText={t.reset}
+        cancelText="Cancel"
       />
     </div>
   );

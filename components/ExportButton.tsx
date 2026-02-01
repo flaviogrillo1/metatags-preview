@@ -5,9 +5,10 @@ import { Download } from "lucide-react";
 
 interface ExportButtonProps {
   metaTags: MetaTags;
+  onError?: (title: string, message: string) => void;
 }
 
-export function ExportButton({ metaTags }: ExportButtonProps) {
+export function ExportButton({ metaTags, onError }: ExportButtonProps) {
   const handleExport = async () => {
     try {
       const html2canvas = (await import("html2canvas")).default;
@@ -128,7 +129,10 @@ export function ExportButton({ metaTags }: ExportButtonProps) {
       link.click();
     } catch (error) {
       console.error("Error exporting preview:", error);
-      alert("Failed to export preview. If images are missing, it may be due to CORS restrictions. Try using different image URLs.");
+      onError?.(
+        "Export Failed",
+        "Failed to export preview. If images are missing, it may be due to CORS restrictions. Try using different image URLs."
+      );
     }
   };
 

@@ -7,9 +7,10 @@ interface PricingSectionProps {
   isPro: boolean;
   hoursRemaining: number;
   onUnlock: () => void;
+  onError?: (title: string, message: string) => void;
 }
 
-export function PricingSection({ isPro, hoursRemaining, onUnlock }: PricingSectionProps) {
+export function PricingSection({ isPro, hoursRemaining, onUnlock, onError }: PricingSectionProps) {
   const [processing, setProcessing] = useState(false);
 
   const handleUnlock = async () => {
@@ -52,7 +53,10 @@ export function PricingSection({ isPro, hoursRemaining, onUnlock }: PricingSecti
       onUnlock();
     } catch (error) {
       console.error("Error processing payment:", error);
-      alert("Payment failed: " + (error instanceof Error ? error.message : "Unknown error"));
+      onError?.(
+        "Payment Failed",
+        error instanceof Error ? error.message : "Unknown error"
+      );
     } finally {
       setProcessing(false);
     }
