@@ -152,7 +152,7 @@ export function ExportButton({ metaTags }: ExportButtonProps) {
       
       <div className="mt-4 p-3 bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg">
         <p className="text-xs text-yellow-800 dark:text-yellow-200">
-          <strong>⚠️ Note:</strong> Some images may not export due to CORS restrictions. See the <a href="/help" className="underline">Help page</a> for details.
+          <strong>⚠️ Note:</strong> Some images may not export due to CORS restrictions. See the Help page for details.
         </p>
       </div>
     </div>
