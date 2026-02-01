@@ -3,7 +3,9 @@
     "title": "Meta Tags Preview Tool",
     "subtitle": "See how your links look on Facebook, Twitter, LinkedIn, and more",
     "help": "Help & Documentation",
+    "helpShort": "Help",
     "reset": "Reset",
+    "resetConfirm": "Are you sure you want to reset the usage counter?",
     "hoursRemaining": "{hours}h remaining"
   },
   "input": {
@@ -12,6 +14,46 @@
     "button": "Preview",
     "loading": "Loading...",
     "description": "Enter any URL to fetch and preview its Open Graph and Twitter Card meta tags"
+  },
+  "validation": {
+    "title": "Validation Results",
+    "valid": "✅ All tags are valid!",
+    "warnings": "⚠️ Warnings",
+    "errors": "❌ Errors",
+    "noTitle": "Missing title tag",
+    "noDescription": "Missing description tag",
+    "noImage": "Missing image tag",
+    "titleTooLong": "Title is too long ({count} characters, recommended: {max})",
+    "titleTooShort": "Title is too short ({count} characters, recommended: {min})",
+    "descriptionTooLong": "Description is too long ({count} characters, recommended: {max})",
+    "imageTooSmall": "Image may be too small ({width}x{height}, recommended: 1200x630)"
+  },
+  "export": {
+    "title": "Export Previews",
+    "button": "Export All as ZIP",
+    "description": "Download all previews (Facebook, Twitter, LinkedIn + Combined) as a ZIP file",
+    "note": "Some images may not export due to CORS restrictions. See the Help page for details.",
+    "processing": "Processing...",
+    "success": "ZIP file downloaded successfully!"
+  },
+  "pricing": {
+    "unlockAccess": "Unlock Unlimited Access",
+    "subtitle": "Get 24 hours of unlimited previews for just €0.99",
+    "dailyPass": "DAILY PASS",
+    "for24Hours": "for 24 hours",
+    "feature1": "Unlimited meta tag previews",
+    "feature2": "24 hour access",
+    "feature3": "No registration required",
+    "feature4": "Cancel anytime (one-time payment)",
+    "unlockNow": "Unlock Now",
+    "processing": "Processing...",
+    "securePayment": "Secure payment via Stripe. One-time payment, no subscription.",
+    "unlocked": "UNLOCKED",
+    "ofUnlimitedAccess": "of unlimited access remaining"
+  },
+  "usage": {
+    "remaining": "{count} of {limit} free previews remaining",
+    "unlimited": "Unlimited access"
   },
   "modal": {
     "limitReached": "Free Limit Reached",

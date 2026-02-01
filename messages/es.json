@@ -3,7 +3,9 @@
     "title": "Herramienta Vista Previa Meta Tags",
     "subtitle": "Ve cómo se ven tus enlaces en Facebook, Twitter, LinkedIn y más",
     "help": "Ayuda y Documentación",
+    "helpShort": "Ayuda",
     "reset": "Restablecer",
+    "resetConfirm": "¿Estás seguro de que quieres restablecer el contador de uso?",
     "hoursRemaining": "{hours}h restantes"
   },
   "input": {
@@ -12,6 +14,46 @@
     "button": "Previsualizar",
     "loading": "Obteniendo...",
     "description": "Introduce cualquier URL para obtener y previsualizar sus meta tags Open Graph y Twitter Cards"
+  },
+  "validation": {
+    "title": "Resultados de Validación",
+    "valid": "✅ ¡Todos los tags son válidos!",
+    "warnings": "⚠️ Advertencias",
+    "errors": "❌ Errores",
+    "noTitle": "Falta el tag de título",
+    "noDescription": "Falta el tag de descripción",
+    "noImage": "Falta el tag de imagen",
+    "titleTooLong": "El título es demasiado largo ({count} caracteres, recomendado: {max})",
+    "titleTooShort": "El título es demasiado corto ({count} caracteres, recomendado: {min})",
+    "descriptionTooLong": "La descripción es demasiado larga ({count} caracteres, recomendado: {max})",
+    "imageTooSmall": "La imagen puede ser demasiado pequeña ({width}x{height}, recomendado: 1200x630)"
+  },
+  "export": {
+    "title": "Exportar Previsualizaciones",
+    "button": "Exportar Todo como ZIP",
+    "description": "Descarga todas las previsualizaciones (Facebook, Twitter, LinkedIn + Combinado) como archivo ZIP",
+    "note": "Algunas imágenes pueden no exportarse debido a restricciones CORS. Consulta la página de Ayuda para más detalles.",
+    "processing": "Procesando...",
+    "success": "¡Archivo ZIP descargado con éxito!"
+  },
+  "pricing": {
+    "unlockAccess": "Desbloquear Acceso Ilimitado",
+    "subtitle": "Obtén 24 horas de previsualizaciones ilimitadas por solo €0.99",
+    "dailyPass": "PASE DIARIO",
+    "for24Hours": "por 24 horas",
+    "feature1": "Previsualizaciones ilimitadas de meta tags",
+    "feature2": "Acceso por 24 horas",
+    "feature3": "Sin registro requerido",
+    "feature4": "Cancela cuando quieras (pago único)",
+    "unlockNow": "Desbloquear Ahora",
+    "processing": "Procesando...",
+    "securePayment": "Pago seguro vía Stripe. Pago único, sin suscripción.",
+    "unlocked": "DESBLOQUEADO",
+    "ofUnlimitedAccess": "de acceso ilimitado restante"
+  },
+  "usage": {
+    "remaining": "{count} de {limit} previsualizaciones gratuitas restantes",
+    "unlimited": "Acceso ilimitado"
   },
   "modal": {
     "limitReached": "Límite Gratuito Alcanzado",

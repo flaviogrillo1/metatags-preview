@@ -1,5 +1,7 @@
 "use client";
 
+import { useTranslations } from 'next-intl';
+
 interface UsageCounterProps {
   count: number;
   limit: number;
@@ -7,6 +9,8 @@ interface UsageCounterProps {
 }
 
 export function UsageCounter({ count, limit, isPro }: UsageCounterProps) {
+  const t = useTranslations('usage');
+
   if (isPro) {
     return (
       <div className="bg-gradient-to-r from-purple-600 to-blue-600 rounded-xl shadow-lg p-4 mb-8">
@@ -17,7 +21,7 @@ export function UsageCounter({ count, limit, isPro }: UsageCounterProps) {
             </svg>
             <span className="font-semibold">Pro Plan Active</span>
           </div>
-          <span className="text-sm">Unlimited previews</span>
+          <span className="text-sm">{t('unlimited')}</span>
         </div>
       </div>
     );
@@ -33,7 +37,7 @@ export function UsageCounter({ count, limit, isPro }: UsageCounterProps) {
           Free Plan Usage
         </span>
         <span className="text-sm text-slate-600 dark:text-slate-400">
-          {count} / {limit} previews today
+          {t('remaining', { count, limit })}
         </span>
       </div>
       <div className="w-full bg-slate-200 dark:bg-slate-700 rounded-full h-2.5">

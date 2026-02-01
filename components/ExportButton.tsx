@@ -2,6 +2,7 @@
 
 import { MetaTags } from "@/types/meta";
 import { Download } from "lucide-react";
+import { useTranslations } from 'next-intl';
 
 interface ExportButtonProps {
   metaTags: MetaTags;
@@ -9,11 +10,42 @@ interface ExportButtonProps {
 }
 
 export function ExportButton({ metaTags, onError }: ExportButtonProps) {
+  const t = useTranslations();
+
   const handleExport = async () => {
     try {
       const html2canvas = (await import("html2canvas")).default;
-      
-      // Create a temporary container for export with improved styling
+      const JSZip = (await import("jszip")).default;
+
+      const zip = new JSZip();
+      const previews: { name: string; element: string }[] = [
+        { name: "facebook-preview.png", element: "#facebook-preview" },
+        { name: "twitter-preview.png", element: "#twitter-preview" },
+        { name: "linkedin-preview.png", element: "#linkedin-preview" },
+      ];
+
+      for (const preview of previews) {
+        const previewElement = document.querySelector(preview.element);
+        if (!previewElement) continue;
+
+        const canvas = await html2canvas(previewElement as HTMLElement, {
+          backgroundColor: "#ffffff",
+          scale: 2,
+          useCORS: true,
+          allowTaint: true,
+          logging: false,
+        });
+
+        const blob = await new Promise<Blob>((resolve) => {
+          canvas.toBlob((blob) => {
+            resolve(blob!);
+          }, "image/png");
+        });
+
+        zip.file(preview.name, blob);
+      }
+
+      // Also create the combined export
       const container = document.createElement("div");
       container.style.position = "fixed";
       container.style.left = "-9999px";
@@ -123,10 +155,21 @@ export function ExportButton({ metaTags, onError }: ExportButtonProps) {
 
       document.body.removeChild(container);
 
+      const combinedBlob = await new Promise<Blob>((resolve) => {
+        canvas.toBlob((blob) => {
+          resolve(blob!);
+        }, "image/png");
+      });
+
+      zip.file("combined-preview.png", combinedBlob);
+
+      // Generate the ZIP file
+      const content = await zip.generateAsync({ type: "blob" });
       const link = document.createElement("a");
-      link.download = `metatags-preview-${Date.now()}.png`;
-      link.href = canvas.toDataURL("image/png", 1.0);
+      link.download = `metatags-preview-${Date.now()}.zip`;
+      link.href = URL.createObjectURL(content);
       link.click();
+      URL.revokeObjectURL(link.href);
     } catch (error) {
       console.error("Error exporting preview:", error);
       onError?.(
@@ -139,7 +182,7 @@ export function ExportButton({ metaTags, onError }: ExportButtonProps) {
   return (
     <div className="bg-white dark:bg-slate-800 rounded-xl shadow-lg p-6">
       <h3 className="text-lg font-semibold text-slate-800 dark:text-slate-100 mb-4">
-        Export Preview
+        Export Previews
       </h3>
 
       <button
@@ -147,11 +190,11 @@ export function ExportButton({ metaTags, onError }: ExportButtonProps) {
         className="w-full px-6 py-3 bg-green-600 hover:bg-green-700 text-white font-semibold rounded-lg transition-colors flex items-center justify-center gap-2"
       >
         <Download size={20} />
-        Export as PNG
+        Export All as ZIP
       </button>
 
       <p className="mt-3 text-sm text-slate-500 dark:text-slate-400 text-center">
-        Download the preview as an image to share with your team
+        Download all previews (Facebook, Twitter, LinkedIn + Combined) as a ZIP file
       </p>
       
       <div className="mt-4 p-3 bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg">

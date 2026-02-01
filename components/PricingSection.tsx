@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Check, Zap, Clock } from "lucide-react";
+import { useTranslations } from 'next-intl';
 
 interface PricingSectionProps {
   isPro: boolean;
@@ -11,6 +12,7 @@ interface PricingSectionProps {
 }
 
 export function PricingSection({ isPro, hoursRemaining, onUnlock, onError }: PricingSectionProps) {
+  const t = useTranslations('pricing');
   const [processing, setProcessing] = useState(false);
 
   const handleUnlock = async () => {
@@ -70,7 +72,7 @@ export function PricingSection({ isPro, hoursRemaining, onUnlock, onError }: Pri
             <div className="p-6 text-white text-center">
               <div className="flex items-center justify-center gap-2 mb-4">
                 <Zap size={32} className="text-yellow-300" />
-                <span className="font-bold text-2xl">UNLOCKED</span>
+                <span className="font-bold text-2xl">{t('unlocked')}</span>
               </div>
               
               <div className="bg-white/20 rounded-xl p-4 mb-4">
@@ -78,7 +80,7 @@ export function PricingSection({ isPro, hoursRemaining, onUnlock, onError }: Pri
                   <Clock size={28} />
                   <span>{hoursRemaining}h</span>
                 </div>
-                <p className="text-sm text-purple-100 mt-2">of unlimited access remaining</p>
+                <p className="text-sm text-purple-100 mt-2">{t('ofUnlimitedAccess')}</p>
               </div>
 
               <div className="text-sm space-y-1">
@@ -97,10 +99,10 @@ export function PricingSection({ isPro, hoursRemaining, onUnlock, onError }: Pri
     <div className="mt-16">
       <div className="text-center mb-8">
         <h2 className="text-3xl font-bold text-slate-800 dark:text-slate-100 mb-3">
-          Unlock Unlimited Access
+          {t('unlockAccess')}
         </h2>
         <p className="text-lg text-slate-600 dark:text-slate-300">
-          Get 24 hours of unlimited previews for just €0.99
+          {t('subtitle')}
         </p>
       </div>
 
@@ -109,10 +111,10 @@ export function PricingSection({ isPro, hoursRemaining, onUnlock, onError }: Pri
           <div className="bg-gradient-to-r from-purple-600 to-blue-600 p-6 text-white text-center">
             <div className="flex items-center justify-center gap-2 mb-2">
               <Zap size={24} />
-              <span className="font-semibold text-lg">DAILY PASS</span>
+              <span className="font-semibold text-lg">{t('dailyPass')}</span>
             </div>
             <div className="text-5xl font-bold mb-2">€0.99</div>
-            <div className="text-purple-100">for 24 hours</div>
+            <div className="text-purple-100">{t('for24Hours')}</div>
           </div>
 
           <div className="p-6">
@@ -120,25 +122,25 @@ export function PricingSection({ isPro, hoursRemaining, onUnlock, onError }: Pri
               <li className="flex items-start gap-3">
                 <Check className="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" />
                 <span className="text-slate-700 dark:text-slate-300">
-                  <strong>Unlimited</strong> meta tag previews
+                  <strong>{t('feature1')}</strong>
                 </span>
               </li>
               <li className="flex items-start gap-3">
                 <Check className="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" />
                 <span className="text-slate-700 dark:text-slate-300">
-                  <strong>24 hour</strong> access
+                  <strong>{t('feature2')}</strong>
                 </span>
               </li>
               <li className="flex items-start gap-3">
                 <Check className="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" />
                 <span className="text-slate-700 dark:text-slate-300">
-                  <strong>No registration</strong> required
+                  <strong>{t('feature3')}</strong>
                 </span>
               </li>
               <li className="flex items-start gap-3">
                 <Check className="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" />
                 <span className="text-slate-700 dark:text-slate-300">
-                  <strong>Cancel anytime</strong> (one-time payment)
+                  <strong>{t('feature4')}</strong>
                 </span>
               </li>
             </ul>
@@ -151,15 +153,15 @@ export function PricingSection({ isPro, hoursRemaining, onUnlock, onError }: Pri
               {processing ? (
                 <>
                   <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
-                  Processing...
+                  {t('processing')}
                 </>
               ) : (
-                "Unlock Now"
+                t('unlockNow')
               )}
             </button>
 
             <p className="mt-4 text-xs text-center text-slate-500 dark:text-slate-400">
-              Secure payment via Stripe. One-time payment, no subscription.
+              {t('securePayment')}
             </p>
           </div>
         </div>
