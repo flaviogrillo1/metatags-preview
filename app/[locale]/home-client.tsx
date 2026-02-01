@@ -75,13 +75,37 @@ export function HomePage({ locale = 'en' }: HomePageProps) {
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
-    const paymentIntent = params.get('payment_intent');
+    const paymentIntentId = params.get('payment_intent');
     const redirectStatus = params.get('redirect_status');
-    
-    if (paymentIntent === 'succeeded' && redirectStatus === 'succeeded') {
-      unlockDay();
-      window.history.replaceState({}, '', window.location.pathname);
-      setShowSuccessModal(true);
+
+    if (paymentIntentId && redirectStatus === 'succeeded') {
+      // Verify the payment with Stripe
+      const verifyAndUnlock = async () => {
+        try {
+          const response = await fetch('/api/verify-payment', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ paymentIntentId }),
+          });
+
+          if (response.ok) {
+            const data = await response.json();
+            if (data.isValid) {
+              // Save the payment intent ID
+              localStorage.setItem('metatags_pro_payment_id', paymentIntentId);
+              unlockDay();
+              setShowSuccessModal(true);
+            }
+          }
+        } catch (error) {
+          console.error('Error verifying payment:', error);
+        } finally {
+          // Clean URL
+          window.history.replaceState({}, '', window.location.pathname);
+        }
+      };
+
+      verifyAndUnlock();
     }
   }, []);
 
