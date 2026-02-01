@@ -1,18 +1,26 @@
 {
-  "common": {
-    "title": "Meta Tags Preview Tool",
-    "subtitle": "See how your links look on Facebook, Twitter, LinkedIn, and more",
-    "help": "Help & Documentation"
+  "home": {
+    "title": "Outil Aperçu Balises Meta",
+    "subtitle": "Voyez comment vos liens apparaissent sur Facebook, Twitter, LinkedIn et plus",
+    "help": "Aide et Documentation",
+    "reset": "Réinitialiser",
+    "hoursRemaining": "{hours}h restantes"
   },
   "input": {
-    "placeholder": "Enter your website URL...",
-    "button": "Fetch Meta Tags",
-    "fetching": "Fetching..."
+    "title": "Entrez l'URL à Apercevoir",
+    "placeholder": "exemple.com",
+    "button": "Apercevoir",
+    "loading": "Chargement...",
+    "description": "Entrez any URL pour récupérer et prévisualiser ses méta-tags Open Graph et Twitter Cards"
   },
-  "preview": {
-    "title": "Preview",
-    "facebook": "Facebook Preview",
-    "twitter": "Twitter Preview",
-    "linkedin": "LinkedIn Preview"
+  "modal": {
+    "limitReached": "Limite Gratuite Atteinte",
+    "limitMessage": "Vous avez utilisé vos 5 aperçus gratuits d'aujourd'hui. Passez à Pro pour un accès illimité et portez votre optimisation des réseaux sociaux au niveau supérieur!",
+    "unlockButton": "Débloquer 24 Heures (€0.99)",
+    "fetchError": "Impossible de Récupérer l'URL",
+    "fetchErrorMessage": "Impossible de récupérer les méta-tags de cette URL. Veuillez vérifier que le site existe et est accessible.",
+    "paymentSuccess": "Paiement Réussi!",
+    "paymentSuccessMessage": "Vous avez maintenant 24 heures d'accès illimité à toutes les fonctionnalités.",
+    "understood": "Compris"
   }
 }

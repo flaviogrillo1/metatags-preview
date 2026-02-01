@@ -1,18 +1,26 @@
 {
-  "common": {
-    "title": "Meta Tags Preview Tool",
-    "subtitle": "See how your links look on Facebook, Twitter, LinkedIn, and more",
-    "help": "Help & Documentation"
+  "home": {
+    "title": "Ferramenta Visualização Meta Tags",
+    "subtitle": "Veja como seus links aparecem no Facebook, Twitter, LinkedIn e mais",
+    "help": "Ajuda e Documentação",
+    "reset": "Redefinir",
+    "hoursRemaining": "{hours}h restantes"
   },
   "input": {
-    "placeholder": "Enter your website URL...",
-    "button": "Fetch Meta Tags",
-    "fetching": "Fetching..."
+    "title": "Digite URL para Visualizar",
+    "placeholder": "exemplo.com",
+    "button": "Visualizar",
+    "loading": "Carregando...",
+    "description": "Digite qualquer URL para buscar e visualizar suas meta tags Open Graph e Twitter Cards"
   },
-  "preview": {
-    "title": "Preview",
-    "facebook": "Facebook Preview",
-    "twitter": "Twitter Preview",
-    "linkedin": "LinkedIn Preview"
+  "modal": {
+    "limitReached": "Limite Gratuito Atingido",
+    "limitMessage": "Você usou suas 5 visualizações gratuitas de hoje. Atualize para Pro para acesso ilimitado e leve sua otimização de mídia social para o próximo nível!",
+    "unlockButton": "Desbloquear 24 Horas (€0.99)",
+    "fetchError": "Não Foi Possível Buscar URL",
+    "fetchErrorMessage": "Não foi possível buscar meta tags desta URL. Por favor verifique se o site existe e está acessível.",
+    "paymentSuccess": "Pagamento Bem-Sucedido!",
+    "paymentSuccessMessage": "Agora você tem 24 horas de acesso ilimitado a todos os recursos.",
+    "understood": "Entendido"
   }
 }

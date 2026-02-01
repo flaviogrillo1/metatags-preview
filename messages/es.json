@@ -1,18 +1,26 @@
 {
-  "common": {
+  "home": {
     "title": "Herramienta Vista Previa Meta Tags",
     "subtitle": "Ve cómo se ven tus enlaces en Facebook, Twitter, LinkedIn y más",
-    "help": "Ayuda y Documentación"
+    "help": "Ayuda y Documentación",
+    "reset": "Restablecer",
+    "hoursRemaining": "{hours}h restantes"
   },
   "input": {
-    "placeholder": "Introduce la URL de tu web...",
-    "button": "Obtener Meta Tags",
-    "fetching": "Obteniendo..."
+    "title": "Introduce URL para Previsualizar",
+    "placeholder": "ejemplo.com",
+    "button": "Previsualizar",
+    "loading": "Obteniendo...",
+    "description": "Introduce cualquier URL para obtener y previsualizar sus meta tags Open Graph y Twitter Cards"
   },
-  "preview": {
-    "title": "Vista Previa",
-    "facebook": "Vista Previa Facebook",
-    "twitter": "Vista Previa Twitter",
-    "linkedin": "Vista Previa LinkedIn"
+  "modal": {
+    "limitReached": "Límite Gratuito Alcanzado",
+    "limitMessage": "Has usado tus 5 previsualizaciones gratuitas de hoy. ¡Actualiza a Pro para acceso ilimitado y lleva tu optimización de redes sociales al siguiente nivel!",
+    "unlockButton": "Desbloquear 24 Horas (€0.99)",
+    "fetchError": "No Se Pudo Obtener la URL",
+    "fetchErrorMessage": "No se pudieron obtener los meta tags de esta URL. Por favor verifica que el sitio web existe y es accesible.",
+    "paymentSuccess": "¡Pago Exitoso!",
+    "paymentSuccessMessage": "Ahora tienes 24 horas de acceso ilimitado a todas las funciones.",
+    "understood": "Entendido"
   }
 }

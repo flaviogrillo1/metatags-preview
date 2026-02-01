@@ -1,18 +1,26 @@
 {
-  "common": {
+  "home": {
     "title": "Meta Tags Preview Tool",
     "subtitle": "See how your links look on Facebook, Twitter, LinkedIn, and more",
-    "help": "Help & Documentation"
+    "help": "Help & Documentation",
+    "reset": "Reset",
+    "hoursRemaining": "{hours}h remaining"
   },
   "input": {
-    "placeholder": "Enter your website URL...",
-    "button": "Fetch Meta Tags",
-    "fetching": "Fetching..."
+    "title": "Enter URL to Preview",
+    "placeholder": "example.com",
+    "button": "Preview",
+    "loading": "Loading...",
+    "description": "Enter any URL to fetch and preview its Open Graph and Twitter Card meta tags"
   },
-  "preview": {
-    "title": "Preview",
-    "facebook": "Facebook Preview",
-    "twitter": "Twitter Preview",
-    "linkedin": "LinkedIn Preview"
+  "modal": {
+    "limitReached": "Free Limit Reached",
+    "limitMessage": "You've used your 5 free previews for today. Upgrade to Pro for unlimited access and take your social media optimization to the next level!",
+    "unlockButton": "Unlock 24 Hours (€0.99)",
+    "fetchError": "Unable to Fetch URL",
+    "fetchErrorMessage": "Unable to fetch meta tags from this URL. Please check that the website exists and is accessible.",
+    "paymentSuccess": "Payment Successful!",
+    "paymentSuccessMessage": "You now have 24 hours of unlimited access to all features.",
+    "understood": "Entendido"
   }
 }
