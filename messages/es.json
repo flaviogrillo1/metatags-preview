@@ -1,0 +1,18 @@
+{
+  "common": {
+    "title": "Herramienta Vista Previa Meta Tags",
+    "subtitle": "Ve cómo se ven tus enlaces en Facebook, Twitter, LinkedIn y más",
+    "help": "Ayuda y Documentación"
+  },
+  "input": {
+    "placeholder": "Introduce la URL de tu web...",
+    "button": "Obtener Meta Tags",
+    "fetching": "Obteniendo..."
+  },
+  "preview": {
+    "title": "Vista Previa",
+    "facebook": "Vista Previa Facebook",
+    "twitter": "Vista Previa Twitter",
+    "linkedin": "Vista Previa LinkedIn"
+  }
+}
