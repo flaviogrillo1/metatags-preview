@@ -12,7 +12,7 @@ import { useStripeSubscription } from "@/hooks/useStripeSubscription";
 import type { MetaTags, ValidationResult } from "@/types/meta";
 
 export default function Home() {
-  const { isPro, customerId, loading: subLoading, setCustomerId, setProStatus } = useStripeSubscription();
+  const { isPro, expiresAt, loading: subLoading, unlockDay, hoursRemaining } = useStripeSubscription();
   
   const [url, setUrl] = useState("");
   const [metaTags, setMetaTags] = useState<MetaTags>({
@@ -59,20 +59,21 @@ export default function Home() {
     }
   };
 
-  // Check URL parameters for successful checkout
+  // Check URL parameters for successful payment
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
-    const sessionId = params.get('session_id');
+    const paymentIntent = params.get('payment_intent');
+    const redirectStatus = params.get('redirect_status');
     
-    if (sessionId && params.get('success') === 'true') {
-      // Successful payment - customer should be marked as pro
-      setProStatus(true);
+    if (paymentIntent === 'succeeded' && redirectStatus === 'succeeded') {
+      // Successful payment - unlock 24h access
+      unlockDay();
       
       // Clear URL params
       window.history.replaceState({}, '', window.location.pathname);
       
       // Show success message
-      alert('🎉 Payment successful! You now have unlimited previews.');
+      alert('🎉 Payment successful! You now have 24 hours of unlimited access.');
     }
   }, []);
 
@@ -139,15 +140,20 @@ export default function Home() {
         {/* Usage Counter */}
         <div className="flex justify-center gap-4 mb-8">
           <UsageCounter count={usageCount} limit={FREE_LIMIT} isPro={isPro} />
+          {isPro && hoursRemaining > 0 && (
+            <div className="bg-gradient-to-r from-purple-600 to-blue-600 rounded-xl shadow-lg px-4 py-1 text-white text-sm">
+              ⏰ {hoursRemaining}h remaining
+            </div>
+          )}
           {!isPro && usageCount > 0 && (
             <button
               onClick={() => {
-                if (confirm('Reset your daily usage counter? This is useful for testing.')) {
+                if (confirm('Reset your daily usage counter?')) {
                   updateUsageCount(0);
                 }
               }}
               className="px-3 py-1 text-xs bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-300 rounded transition-colors"
-              title="Reset usage counter (testing only)"
+              title="Reset usage counter"
             >
               Reset
             </button>
@@ -182,11 +188,8 @@ export default function Home() {
         {/* Pricing Section */}
         <PricingSection 
           isPro={isPro}
-          customerId={customerId}
-          onUpgrade={(newCustomerId) => {
-            setCustomerId(newCustomerId);
-            setProStatus(true);
-          }}
+          hoursRemaining={hoursRemaining}
+          onUnlock={() => unlockDay()}
         />
       </div>
     </div>

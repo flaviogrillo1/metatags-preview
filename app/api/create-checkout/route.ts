@@ -12,50 +12,27 @@ export async function POST(request: NextRequest) {
       throw new Error("STRIPE_SECRET_KEY is not configured");
     }
 
-    if (!process.env.STRIPE_PRICE_ID) {
-      throw new Error("STRIPE_PRICE_ID is not configured");
-    }
+    const { returnUrl } = await request.json();
 
-    const { customerId, returnUrl } = await request.json();
-    
-    let stripeCustomerId = customerId;
-    
-    // Create new customer if doesn't exist
-    if (!stripeCustomerId) {
-      const customer = await stripe.customers.create({
-        metadata: {
-          source: 'metatags-preview',
-        },
-      });
-      stripeCustomerId = customer.id;
-    }
-
-    // Create checkout session
-    const session = await stripe.checkout.sessions.create({
-      payment_method_types: ["card"],
-      customer: stripeCustomerId,
-      line_items: [
-        {
-          price: process.env.STRIPE_PRICE_ID,
-          quantity: 1,
-        },
-      ],
-      mode: "subscription",
-      success_url: `${returnUrl || process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"}?success=true&session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${returnUrl || process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"}?canceled=true`,
+    // Create one-time payment for daily access
+    const paymentIntent = await stripe.paymentIntents.create({
+      amount: 99, // 0.99 EUR in cents
+      currency: 'eur',
       metadata: {
-        customerId: stripeCustomerId,
+        product: 'metatags-preview-daily',
       },
     });
 
+    // Return client secret for frontend to complete payment
     return NextResponse.json({ 
-      url: session.url,
-      customerId: stripeCustomerId,
+      clientSecret: paymentIntent.client_secret,
+      amount: 0.99,
+      currency: 'EUR',
     });
   } catch (error) {
-    console.error("Error creating checkout session:", error);
+    console.error("Error creating payment intent:", error);
     return NextResponse.json(
-      { error: "Failed to create checkout session" },
+      { error: "Failed to create payment" },
       { status: 500 }
     );
   }

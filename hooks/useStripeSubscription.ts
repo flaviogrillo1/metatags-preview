@@ -1,80 +1,82 @@
 import { useState, useEffect } from 'react';
 
-interface StripeSubscription {
+interface DailyAccess {
   isPro: boolean;
-  customerId: string | null;
+  expiresAt: number | null;
   loading: boolean;
   error: string | null;
 }
 
 export function useStripeSubscription() {
-  const [state, setState] = useState<StripeSubscription>({
+  const [state, setState] = useState<DailyAccess>({
     isPro: false,
-    customerId: null,
+    expiresAt: null,
     loading: true,
     error: null,
   });
 
-  // Load subscription status from localStorage and verify with Stripe
+  // Check if daily access is still valid
   useEffect(() => {
-    const loadSubscription = async () => {
+    const checkDailyAccess = () => {
       try {
-        // Check if we have a saved customer ID
-        const savedCustomerId = localStorage.getItem('stripe_customer_id');
+        const expiresAt = localStorage.getItem('metatags_pro_expires_at');
+        const now = Date.now();
         
-        if (!savedCustomerId) {
-          setState(prev => ({ ...prev, loading: false }));
-          return;
+        if (expiresAt && parseInt(expiresAt, 10) > now) {
+          // Still valid
+          setState({
+            isPro: true,
+            expiresAt: parseInt(expiresAt, 10),
+            loading: false,
+            error: null,
+          });
+        } else {
+          // Expired or not set
+          localStorage.removeItem('metatags_pro_expires_at');
+          setState({
+            isPro: false,
+            expiresAt: null,
+            loading: false,
+            error: null,
+          });
         }
-
-        // Verify subscription status with Stripe via API
-        const response = await fetch('/api/check-subscription', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ customerId: savedCustomerId }),
-        });
-
-        if (!response.ok) {
-          throw new Error('Failed to verify subscription');
-        }
-
-        const data = await response.json();
-        
-        setState({
-          isPro: data.isPro || false,
-          customerId: savedCustomerId,
-          loading: false,
-          error: null,
-        });
-
-        // Also update localStorage
-        localStorage.setItem('metatags_is_pro', data.isPro ? 'true' : 'false');
       } catch (error) {
-        console.error('Error loading subscription:', error);
+        console.error('Error checking daily access:', error);
         setState(prev => ({
           ...prev,
           loading: false,
-          error: error instanceof Error ? error.message : 'Failed to load subscription',
+          error: error instanceof Error ? error.message : 'Failed to check access',
         }));
       }
     };
 
-    loadSubscription();
+    checkDailyAccess();
+    
+    // Check every minute
+    const interval = setInterval(checkDailyAccess, 60000);
+    
+    return () => clearInterval(interval);
   }, []);
 
-  const setCustomerId = (customerId: string) => {
-    localStorage.setItem('stripe_customer_id', customerId);
-    setState(prev => ({ ...prev, customerId }));
+  const unlockDay = () => {
+    const tomorrow = Date.now() + (24 * 60 * 60 * 1000); // 24 hours from now
+    localStorage.setItem('metatags_pro_expires_at', tomorrow.toString());
+    
+    setState({
+      isPro: true,
+      expiresAt: tomorrow,
+      loading: false,
+      error: null,
+    });
   };
 
-  const setProStatus = (isPro: boolean) => {
-    localStorage.setItem('metatags_is_pro', isPro ? 'true' : 'false');
-    setState(prev => ({ ...prev, isPro }));
-  };
+  const hoursRemaining = state.expiresAt 
+    ? Math.max(0, Math.floor((state.expiresAt - Date.now()) / (1000 * 60 * 60)))
+    : 0;
 
   return {
     ...state,
-    setCustomerId,
-    setProStatus,
+    unlockDay,
+    hoursRemaining,
   };
 }

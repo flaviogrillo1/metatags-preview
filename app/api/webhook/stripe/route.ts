@@ -31,35 +31,13 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Handle the event
-    switch (event.type) {
-      case "checkout.session.completed":
-        const session = event.data.object as Stripe.Checkout.Session;
-        console.log("Checkout session completed:", session.id);
-        
-        // TODO: Update user's subscription status in your database
-        // For now, we'll just log it
-        console.log("Customer:", session.customer);
-        console.log("Subscription:", session.subscription);
-        break;
-
-      case "customer.subscription.created":
-      case "customer.subscription.updated":
-        const subscription = event.data.object as Stripe.Subscription;
-        console.log("Subscription created/updated:", subscription.id);
-        
-        // TODO: Update user's subscription status in your database
-        break;
-
-      case "customer.subscription.deleted":
-        const deletedSubscription = event.data.object as Stripe.Subscription;
-        console.log("Subscription deleted:", deletedSubscription.id);
-        
-        // TODO: Update user's subscription status in your database
-        break;
-
-      default:
-        console.log(`Unhandled event type: ${event.type}`);
+    // Handle payment success
+    if (event.type === "payment_intent.succeeded") {
+      const paymentIntent = event.data.object as Stripe.PaymentIntent;
+      console.log("Payment succeeded:", paymentIntent.id);
+      
+      // The frontend will handle unlocking via success URL
+      // Payment was successful, user gets 24h access
     }
 
     return NextResponse.json({ received: true });
