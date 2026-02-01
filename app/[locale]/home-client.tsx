@@ -18,7 +18,8 @@ interface HomePageProps {
 }
 
 export function HomePage({ locale = 'en' }: HomePageProps) {
-  const t = useTranslations();
+  const t = useTranslations('home');
+  const tModal = useTranslations('modal');
   
   const { isPro, expiresAt, loading: subLoading, unlockDay, hoursRemaining } = useStripeSubscription();
   
@@ -112,7 +113,7 @@ export function HomePage({ locale = 'en' }: HomePageProps) {
       }
     } catch (error) {
       console.error("Error fetching meta tags:", error);
-      setErrorMessage(t('modal.fetchErrorMessage'));
+      setErrorMessage(tModal('fetchErrorMessage'));
       setShowErrorModal(true);
     } finally {
       setLoading(false);
@@ -149,15 +150,15 @@ export function HomePage({ locale = 'en' }: HomePageProps) {
               <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
-              <span className="hidden sm:inline">{t('home.help')}</span>
-              <span className="sm:hidden">{t('home.helpShort') || t('home.help')}</span>
+              <span className="hidden sm:inline">{t('help')}</span>
+              <span className="sm:hidden">{t('helpShort') || t('help')}</span>
             </a>
           </div>
           <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-3 sm:mb-4 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent px-2">
-            {t('home.title')}
+            {t('title')}
           </h1>
           <p className="text-base sm:text-lg md:text-xl text-slate-600 dark:text-slate-300 max-w-2xl mx-auto px-4">
-            {t('home.subtitle')}
+            {t('subtitle')}
           </p>
         </header>
 
@@ -166,7 +167,7 @@ export function HomePage({ locale = 'en' }: HomePageProps) {
           <UsageCounter count={usageCount} limit={FREE_LIMIT} isPro={isPro} />
           {isPro && hoursRemaining > 0 && (
             <div className="bg-gradient-to-r from-purple-600 to-blue-600 rounded-xl shadow-lg px-3 sm:px-4 py-1 text-white text-xs sm:text-sm">
-              ⏰ {t('home.hoursRemaining', { hours: hoursRemaining })}
+              ⏰ {t('hoursRemaining', { hours: hoursRemaining })}
             </div>
           )}
           {!isPro && usageCount > 0 && (
@@ -177,7 +178,7 @@ export function HomePage({ locale = 'en' }: HomePageProps) {
               className="px-3 py-1 text-xs bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-300 rounded transition-colors"
               title="Reset usage counter"
             >
-              {t('home.reset')}
+              {t('reset')}
             </button>
           )}
         </div>
@@ -222,15 +223,15 @@ export function HomePage({ locale = 'en' }: HomePageProps) {
       <Modal
         isOpen={showLimitModal}
         onClose={() => setShowLimitModal(false)}
-        title={t('modal.limitReached')}
-        message={t('modal.limitMessage')}
+        title={tModal('limitReached')}
+        message={tModal('limitMessage')}
         type="pricing"
       />
 
       <Modal
         isOpen={showErrorModal}
         onClose={() => setShowErrorModal(false)}
-        title={errorTitle || t('modal.fetchError')}
+        title={errorTitle || tModal('fetchError')}
         message={errorMessage}
         type="error"
       />
@@ -238,22 +239,22 @@ export function HomePage({ locale = 'en' }: HomePageProps) {
       <Modal
         isOpen={showSuccessModal}
         onClose={() => setShowSuccessModal(false)}
-        title={t('modal.paymentSuccess')}
-        message={t('modal.paymentSuccessMessage')}
+        title={tModal('paymentSuccess')}
+        message={tModal('paymentSuccessMessage')}
         type="success"
       />
 
       <Modal
         isOpen={showResetModal}
         onClose={() => setShowResetModal(false)}
-        title={t('home.reset')}
-        message={t('home.reset') + '?'}
+        title={t('reset')}
+        message={t('resetConfirm') || t('reset') + '?'}
         type="warning"
         onConfirm={() => {
           updateUsageCount(0);
           setShowResetModal(false);
         }}
-        confirmText={t('home.reset')}
+        confirmText={t('reset')}
         cancelText="Cancel"
       />
     </div>
