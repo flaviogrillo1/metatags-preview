@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from 'next/font/google';
 import { NextIntlClientProvider } from 'next-intl';
-import { getMessages, setRequestLocale } from 'next-intl/server';
+import { setRequestLocale } from 'next-intl/server';
 import { notFound } from 'next/navigation';
 import { locales } from '@/lib/i18n';
 
@@ -96,7 +96,7 @@ export default async function LocaleLayout({
   // Ensure the locale is set for static rendering and server components.
   setRequestLocale(locale);
 
-  const messages = await getMessages();
+  const messages = (await import(`@/messages/${locale}.json`)).default;
 
   return (
     <html lang={locale}>
