@@ -242,7 +242,7 @@ export default function HelpPage() {
               💬 Need More Help?
             </h2>
             <p className="mb-4">
-              Have questions, suggestions, or found a bug? We'd love to hear from you!
+              Have questions, suggestions, or found a bug? We&apos;d love to hear from you!
             </p>
             <div className="flex flex-wrap gap-4">
               <a 
